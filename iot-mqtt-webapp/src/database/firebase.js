@@ -4,7 +4,7 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyD3Z6rjuCROZT-fAzVcic-bMvLstMjv8Hc",
+  apiKey: "API_KEY2",
   authDomain: "mqtt-projekt.firebaseapp.com",
   projectId: "mqtt-projekt",
   storageBucket: "mqtt-projekt.firebasestorage.app",
