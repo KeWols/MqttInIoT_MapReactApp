@@ -1,0 +1,85 @@
+.alert {
+  position: fixed;
+  top: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 450px;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  background-color: #2196f3; /* Default: info */
+  color: white;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.6s, transform 0.3s;
+  padding: 5px 20px;
+}
+
+.alert.success {
+  background-color: #04aa6d;
+}
+
+.alert.warning {
+  background-color: #ff9800;
+}
+
+.alert.danger {
+  background-color: #f44336;
+}
+
+.alert.fade-out {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-20px);
+}
+
+.close-btn {
+  background: none;
+  color: white;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 15px;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #ddd;
+}
+
+/* Reszponzív beállítások kisebb kijelzőkre */
+@media (max-width: 768px) {
+  .alert {
+    width: 75%; /* A kijelző 95%-a */
+    font-size: 17px; /* Kisebb betűméret */
+    padding: 8px 10px; /* Kisebb belső tér */
+    max-width: none; /* Maximális szélesség eltávolítása */
+    padding: 5px 15px;
+    top:25px
+  }
+
+  .close-btn {
+    font-size: 18px; /* Kisebb méretű bezáró gomb */
+    margin-left: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .alert {
+    width: 75%; /* Teljes szélesség */
+    font-size: 14px; /* Kisebb betűméret extra kis kijelzőknél */
+    padding: 6px 8px; /* Szűkebb padding */
+    top: 15px; /* Térköz csökkentése a tetején */
+    padding: 12px 15px;
+  }
+
+  .close-btn {
+    font-size: 16px;
+    margin-left: 5px;
+  }
+}
