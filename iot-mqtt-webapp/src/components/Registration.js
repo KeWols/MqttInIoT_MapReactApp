@@ -3,6 +3,7 @@ import "../App.css";
 import Alert from "./Alert";
 import db from "../database/firebase"; 
 import { collection, addDoc } from "firebase/firestore";
+import bcrypt from "bcryptjs";
 
 const Registration = ({ setView }) => {
   const [username, setUsername] = useState("");
@@ -32,7 +33,7 @@ const Registration = ({ setView }) => {
     }
 
     try {
-      const hashedPassword = pwd1;
+      const hashedPassword = bcrypt.hashSync(pwd1, 10);
       const userCollecion = collection(db, "users");
       await addDoc(userCollecion, {
         username: username,

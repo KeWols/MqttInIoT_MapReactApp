@@ -1,32 +1,67 @@
 import React, { useState } from 'react';
 import '../App.css';
 import Alert from './Alert';
+import db from '../database/firebase'; 
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import bcrypt from "bcryptjs";
 
-const Login = ({ setView, userDatas }) => {
+const Login = ({ setView }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [alert, setAlert] = useState(null);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!username || !password) {
       setAlert({ type: 'danger', message: 'Both fields are required.' });
       return;
     }
 
-    // Check credentials
-    const user = userDatas.find(
-      (user) => user.username === username && user.password === password
-    );
+    try {
+      const usersCollecion = collection(db, "users");
+      const userQuery = query(
+        usersCollecion,
+        where('username', '==', username)
+      );
 
-    if (user) {
-      setAlert({ type: 'success', message: 'Login successful!' });
-      setTimeout(() => {
-        setAlert(null);
-        setView('map'); // Redirect to MapPage
-      }, 2000);
-    } else {
-      setAlert({ type: 'danger', message: 'Invalid username or password.' });
+      const querySnapshot = await getDocs(userQuery);
+
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const userData = userDoc.data();
+
+        const passwordMatch = bcrypt.compareSync(password, userData.password);
+
+        if (passwordMatch) {
+          setAlert({ type: 'success', message: 'Login successful!' });
+          setTimeout(() => {
+            setAlert(null);
+            setView('map'); 
+          }, 2000);
+        } else {
+          setAlert({ type: 'danger', message: 'Invalid username or password.' });
+        }
+      } else {
+        setAlert({ type: 'danger', message: 'Invalid username or password.' });
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      setAlert({ type: 'danger', message: 'Error during login. Try again later.' });
     }
+
+    // Check credentials
+    // const user = userDatas.find(
+    //   (user) => user.username === username && user.password === password
+    // );
+
+    // if (user) {
+    //   setAlert({ type: 'success', message: 'Login successful!' });
+    //   setTimeout(() => {
+    //     setAlert(null);
+    //     setView('map'); // Redirect to MapPage
+    //   }, 2000);
+    // } else {
+    //   setAlert({ type: 'danger', message: 'Invalid username or password.' });
+    // }
   };
 
 

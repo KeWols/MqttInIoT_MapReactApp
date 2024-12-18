@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.16.8",
     "@vis.gl/react-google-maps": "^1.4.2",
     "cra-template": "1.2.0",
     "mqtt": "^5.10.3",
