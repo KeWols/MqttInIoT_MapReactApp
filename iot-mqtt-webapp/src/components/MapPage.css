@@ -1,0 +1,151 @@
+/* Háttér és alap elrendezés */
+.map-page {
+    background-color: #ffffff; /* Lágy rózsaszín háttér */
+    min-height: 100vh; /* Az oldal teljes magasságát lefedi */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* Térkép konténer */
+  .map-container {
+    width: 100%;
+    max-width: 100%;
+    height: 600px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
+    margin-bottom: 20px;
+  }
+  
+  /* Cím stílusa */
+  .map-page h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Checkbox és megosztás opció */
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+  }
+  
+  .checkbox-container label {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .checkbox-container input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+  
+  /* Aktív felhasználók lista konténer */
+  .active-users-container {
+    background-color: white;
+    width: 90%;
+    max-width: 800px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
+  }
+  
+  .active-users-container h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  /* Aktív felhasználók lista */
+  .active-users-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .active-users-container li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #F9F9F9; /* Világos háttér a listához */
+    margin-bottom: 10px; /* Távolság az elemek között */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Árnyék a listaelemekhez */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .active-users-container li:hover {
+    transform: scale(1.02); /* Finom nagyítás hover esetén */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Erősebb árnyék hover esetén */
+  }
+  
+  .active-users-container img {
+    width: 30px; /* Ikon mérete */
+    height: 30px;
+    border-radius: 50%; /* Kör alakú ikonok */
+    object-fit: cover;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Árnyék az ikonokhoz */
+    transition: transform 0.2s ease;
+  }
+  
+  .active-users-container img:hover {
+    transform: scale(1.1); /* Finom nagyítás hover esetén az ikonra */
+  }
+  
+  /* Felhasználónév stílus */
+  .active-users-container li span {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+  }
+  
+  /* Reszponzív design */
+  @media (max-width: 768px) {
+    .map-container {
+      height: 540px;
+    }
+  
+    .checkbox-container {
+      flex-direction: column;
+      text-align: center;
+      gap: 5px;
+    }
+  
+    .active-users-container {
+      padding: 15px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .map-container {
+      height: 550px;
+    }
+  
+    .checkbox-container {
+      padding: 10px;
+    }
+  
+    .active-users-container {
+      padding: 10px;
+    }
+  
+    .active-users-container img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  

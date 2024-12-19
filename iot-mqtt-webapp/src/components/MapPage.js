@@ -7,6 +7,8 @@ import { getUserLocation } from "../locationService";
 import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 import { collection, getDocs } from "firebase/firestore";
 import db from "../database/firebase";
+import './MapPage.css';
+
 
 
 const MapPage = () => {
@@ -119,41 +121,49 @@ const MapPage = () => {
   }
 
   return (
-    <div>
+    <div className="map-page">
       <h1>Map Page</h1>
-      <APIProvider apiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
-        <Map defaultZoom={13} defaultCenter={userPosition} mapId={process.env.REACT_APP_MAP_ID_KEY} style={mapContainerStyle}>
-          {/* User Marker */}
-          <Marker
-            position={userPosition}
-            options={{
-              title: currentUser.username || "My Position",
-              icon: {
-                url: currentUser.image || "http://maps.google.com/mapfiles/ms/icons/red-dot.png", // Default pin
-                scaledSize: new window.google.maps.Size(32, 32),
-              },
-            }}
-          />
-
-          {/* Other Users' Markers */}
-          {otherPositions.map((pos, index) => (
+  
+      {/* Térkép konténer */}
+      <div className="map-container">
+        <APIProvider apiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
+          <Map
+            defaultZoom={13}
+            defaultCenter={userPosition}
+            mapId={process.env.REACT_APP_MAP_ID_KEY}
+          >
+            {/* Felhasználó jelölő */}
             <Marker
-              key={index}
-              position={{ lat: pos.lat, lng: pos.lng }}
+              position={userPosition}
               options={{
-                title: pos.username,
+                title: currentUser.username || "My Position",
                 icon: {
-                  url: pos.iconUrl || "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", // Default pin
+                  url: currentUser.image || "http://maps.google.com/mapfiles/ms/icons/red-dot.png", // Alapértelmezett pin
                   scaledSize: new window.google.maps.Size(32, 32),
                 },
               }}
             />
-          ))}
-        </Map>
-      </APIProvider>
-
-      {/* Checkbox to Start/Stop Sharing */}
-      <div style={{ marginTop: "10px" }}>
+  
+            {/* Többi felhasználó jelölői */}
+            {otherPositions.map((pos, index) => (
+              <Marker
+                key={index}
+                position={{ lat: pos.lat, lng: pos.lng }}
+                options={{
+                  title: pos.username,
+                  icon: {
+                    url: pos.iconUrl || "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", // Alapértelmezett pin
+                    scaledSize: new window.google.maps.Size(32, 32),
+                  },
+                }}
+              />
+            ))}
+          </Map>
+        </APIProvider>
+      </div>
+  
+      {/* Helymegosztás beállításai */}
+      <div className="checkbox-container">
         <label>
           <input
             type="checkbox"
@@ -163,14 +173,15 @@ const MapPage = () => {
           Share My Location
         </label>
       </div>
-
-      {/* Active Users List */}
-      <div style={{ marginTop: "20px" }}>
+  
+      {/* Aktív felhasználók lista */}
+      <div className="active-users-container">
         <h2>Active Users:</h2>
         <ul>
           {otherPositions.map((pos, index) => (
             <li key={index}>
-              {pos.username} - <img src={pos.iconUrl} alt={pos.username} style={{ width: "20px", height: "20px" }} />
+              <img src={pos.iconUrl} alt={pos.username} />
+              <span>{pos.username}</span>
             </li>
           ))}
         </ul>
