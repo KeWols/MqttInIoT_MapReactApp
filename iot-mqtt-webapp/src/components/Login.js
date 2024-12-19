@@ -10,8 +10,10 @@ const Login = ({ setView }) => {
   const [password, setPassword] = useState("");
   const [alert, setAlert] = useState(null);
 
-  const handleLogin = async () => {
+  const loginBtn = async () => {
+    
     if (!username || !password) {
+
       setAlert({ type: "danger", message: "Both fields are required." });
       return;
     }
@@ -30,19 +32,17 @@ const Login = ({ setView }) => {
         if (passwordMatch) {
           setAlert({ type: "success", message: "Login successful!" });
 
-          // Save user data to localStorage
-          localStorage.setItem(
-            "currentUser",
-            JSON.stringify({
+          localStorage.setItem("currentUser", JSON.stringify({
               username: userData.username,
-              image: userData.image || "http://maps.google.com/mapfiles/ms/icons/red-dot.png", // Default pin
+              image: userData.image || "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
             })
           );
 
           setTimeout(() => {
             setAlert(null);
-            setView("map"); // Redirect to MapPage
+            setView("map");
           }, 2000);
+          
         } else {
           setAlert({ type: "danger", message: "Invalid username or password." });
         }
@@ -55,49 +55,33 @@ const Login = ({ setView }) => {
     }
   };
 
-  const handlePwdWarning = () => {
+  const showingPwdWAlert = () => {
     setAlert({
       type: "warning",
       message: "This feature is currently unavailable and is not planned for future release.",
     });
   };
 
-  const handleCloseAlert = () => {
+  const closingAlert = () => {
     setAlert(null);
   };
 
   return (
     <div className="back-g">
-      {/* Alert Component */}
-      {alert && <Alert type={alert.type} message={alert.message} onClose={handleCloseAlert} />}
 
-      {/* Buttons */}
+      {alert && <Alert type={alert.type} message={alert.message} onClose={closingAlert} />}
+
       <div className="same-login">
-        <button className="login" disabled>
-          Login
-        </button>
-        <button className="regist" onClick={() => setView("registration")}>
-          Registration
-        </button>
+        <button className="login" disabled>Login</button>
+        <button className="regist" onClick={() => setView("registration")}>Registration</button>
       </div>
 
-      {/* Login Form */}
       <div className="login-box">
         <h2>Login</h2>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button onClick={handleLogin}>Login</button>
-        <button onClick={handlePwdWarning}>Forget password</button>
+        <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
+        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+        <button onClick={loginBtn}>Login</button>
+        <button onClick={showingPwdWAlert}>Forget password</button>
       </div>
     </div>
   );

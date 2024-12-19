@@ -13,22 +13,24 @@ import './MapPage.css';
 
 const MapPage = () => {
   const [mqttClient, setMqttClient] = useState(null);
-  const [userPosition, setUserPosition] = useState({ lat: 46.776638, lng: 23.595149 }); // Default position
+  const [userPosition, setUserPosition] = useState({ lat: 46.776638, lng: 23.595149 });
   const [otherPositions, setOtherPositions] = useState([]);
   const [isSharingEnabled, setIsSharingEnabled] = useState(true);
-  const [userPins, setUserPins] = useState({}); // Map of username to pin URL
+  const [userPins, setUserPins] = useState({});
   const [googleLoaded, setGoogleLoaded] = useState(false);
 
-  // Get current user from localStorage
+
+
   const storedUser = JSON.parse(localStorage.getItem("currentUser")) || { username: "", image: "" };
   const [currentUser, setCurrentUser] = useState(storedUser);
 
+  
   const topicPub = "friends/location";
   const topicSub = "friends/location";
 
   const mapContainerStyle = { width: "100%", height: "500px" };
 
-  // Load Google Maps API
+  // Betoltese Google Maps API
   useEffect(() => {
     const loader = new Loader({
       apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
@@ -46,23 +48,26 @@ const MapPage = () => {
       });
   }, []);
 
-  // Fetch all user pins from Firestore
+  
   const fetchUserPins = async () => {
     try {
+
       const querySnapshot = await getDocs(collection(db, "users"));
       const pins = {};
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        pins[data.username] = data.image || "http://maps.google.com/mapfiles/ms/icons/red-dot.png"; // Default pin
+        pins[data.username] = data.image || "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
         console.log(`Fetched pin for user: ${data.username}, image: ${data.image}`);
       });
+
       setUserPins(pins);
+
     } catch (error) {
+
       console.error("Error fetching user pins:", error);
     }
   };
 
-  // Publish user location
   const fetchAndPublishLocation = () => {
     getUserLocation(
       (position) => {
@@ -71,8 +76,8 @@ const MapPage = () => {
           const payload = JSON.stringify({
             lat: position.lat,
             lng: position.lng,
-            username: currentUser.username, // Current user's name
-            iconUrl: currentUser.image, // Current user's icon URL
+            username: currentUser.username,
+            iconUrl: currentUser.image,
           });
           mqttClient.publishMessage(topicPub, payload);
           console.log("Location published:", payload);
@@ -82,8 +87,9 @@ const MapPage = () => {
     );
   };
 
-  // Connect to MQTT and fetch user pins
+
   useEffect(() => {
+
     fetchUserPins();
 
     const { client, subscribeToTopic, publishMessage } = connectMqtt((topic, message) => {
@@ -91,11 +97,12 @@ const MapPage = () => {
         try {
           const receivedData = JSON.parse(message);
 
-          // Update Other Users' Positions
+    
           setOtherPositions((prev) => {
             const filtered = prev.filter((pos) => pos.username !== receivedData.username);
             return [...filtered, receivedData];
           });
+
         } catch (err) {
           console.error("Error parsing MQTT message:", err);
         }
@@ -108,10 +115,10 @@ const MapPage = () => {
     return () => client.end();
   }, []);
 
-  // Periodically publish location
+  
   useEffect(() => {
     if (isSharingEnabled) {
-      const interval = setInterval(fetchAndPublishLocation, 5000);
+      const interval = setInterval(fetchAndPublishLocation, 1000); //lekeres es publikalas
       return () => clearInterval(interval);
     }
   }, [isSharingEnabled, mqttClient]);
@@ -124,7 +131,7 @@ const MapPage = () => {
     <div className="map-page">
       <h1>Map Page</h1>
   
-      {/* Térkép konténer */}
+
       <div className="map-container">
         <APIProvider apiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
           <Map
@@ -132,7 +139,7 @@ const MapPage = () => {
             defaultCenter={userPosition}
             mapId={process.env.REACT_APP_MAP_ID_KEY}
           >
-            {/* Felhasználó jelölő */}
+            
             <Marker
               position={userPosition}
               options={{
@@ -144,7 +151,8 @@ const MapPage = () => {
               }}
             />
   
-            {/* Többi felhasználó jelölői */}
+            
+
             {otherPositions.map((pos, index) => (
               <Marker
                 key={index}
@@ -162,7 +170,7 @@ const MapPage = () => {
         </APIProvider>
       </div>
   
-      {/* Helymegosztás beállításai */}
+
       <div className="checkbox-container">
         <label>
           <input
@@ -174,7 +182,7 @@ const MapPage = () => {
         </label>
       </div>
   
-      {/* Aktív felhasználók lista */}
+
       <div className="active-users-container">
         <h2>Active Users:</h2>
         <ul>

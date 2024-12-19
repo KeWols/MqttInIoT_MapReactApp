@@ -6,11 +6,12 @@ import { collection, addDoc } from "firebase/firestore";
 import bcrypt from "bcryptjs";
 
 const Registration = ({ setView }) => {
+
   const [username, setUsername] = useState("");
   const [pwd1, setPwd1] = useState("");
   const [pwd2, setPwd2] = useState("");
-  const [selectedPin, setSelectedPin] = useState(""); // Kiválasztott pin
-  const [alert, setAlert] = useState(null); // To handle alerts
+  const [selectedPin, setSelectedPin] = useState("");
+  const [alert, setAlert] = useState(null);
 
   const pins = [
     { url: "https://img.icons8.com/color/48/000000/marker.png", name: "Marker" },
@@ -21,7 +22,7 @@ const Registration = ({ setView }) => {
     { url: "https://img.icons8.com/color/48/000000/diamond.png", name: "Diamond" },
   ];
 
-  const handleCreateProfile = async () => {
+  const checkIfAllFieldsAreFilled = async () => {
     if (!username || !pwd1 || !pwd2) {
       setAlert({ type: "danger", message: "All fields are required." });
       return;
@@ -53,7 +54,7 @@ const Registration = ({ setView }) => {
     }
   };
 
-  const handlePwdWarning = () => {
+  const showingPwdWAlert = () => {
     setAlert({
       type: "warning",
       message:
@@ -61,69 +62,47 @@ const Registration = ({ setView }) => {
     });
   };
 
-  const handleCloseAlert = () => {
-    setAlert(null); // Close the alert
+  const closeAlert = () => {
+    setAlert(null);
   };
 
   return (
     <div className="back-g">
-      {/* Alert Component */}
-      {alert && <Alert type={alert.type} message={alert.message} onClose={handleCloseAlert} />}
+      
+      {alert && <Alert type={alert.type} message={alert.message} onClose={closeAlert} />}
 
-      {/* Navigation Buttons */}
       <div className="same-regist">
-        <button className="login" onClick={() => setView("login")}>
-          Login
-        </button>
-        <button className="regist" disabled>
-          Registration
-        </button>
+        <button className="login" onClick={() => setView("login")}>Login</button>
+        <button className="regist" disabled>Registration</button>
       </div>
 
-      {/* Registration Form */}
+
       <div className="regist-box">
         <h2>Registration</h2>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          className="pwd1"
-          type="password"
-          placeholder="Password"
-          value={pwd1}
-          onClick={handlePwdWarning} // Show warning alert
-          onChange={(e) => setPwd1(e.target.value)}
-        />
-        <input
-          className="pwd2"
-          type="password"
-          placeholder="Confirm password"
-          value={pwd2}
-          onChange={(e) => setPwd2(e.target.value)}
-        />
+
+        <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
+        <input className="pwd1" type="password" placeholder="Password" value={pwd1} onClick={showingPwdWAlert} onChange={(e) => setPwd1(e.target.value)}/>
+        <input className="pwd2" type="password" placeholder="Confirm password" value={pwd2} onChange={(e) => setPwd2(e.target.value)}/>
+
         <div>
+          
           <h3 className="icon-selector">Select your custom pin</h3>
+
           <div className="pins-container">
             {pins.map((pin, index) => (
-              <img
-              key={index}
-              src={pin.url}
-              alt={pin.name}
-              className={`pin ${selectedPin === pin.url ? "selected" : ""}`}
-              onClick={() => {
-                console.log(`Clicked on: ${pin.name}`);
-                setSelectedPin(pin.url);
-                console.log(`Selected pin: ${pin.url}`); // Konzolra írja a kiválasztott pin URL-jét
-              }}
-            />            
+              <img key={index} src={pin.url} alt={pin.name} className={`pin ${selectedPin === pin.url ? "selected" : ""}`} onClick={() => { console.log(`Clicked on: ${pin.name}`);
+              setSelectedPin(pin.url);
+              console.log(`Selected pin: ${pin.url}`);
+              }}/>            
             ))}
           </div>
+
         </div>
-        <button onClick={handleCreateProfile}>Create profile</button>
+
+        <button onClick={checkIfAllFieldsAreFilled}>Create profile</button>
+
       </div>
+
     </div>
   );
 };
