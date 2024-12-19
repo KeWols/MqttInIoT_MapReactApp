@@ -1,7 +1,4 @@
-//AIzaSyAOdzL_11lgUUD7CQObIyEoKUUDYRyxZHA
-//cae4ae0a5cbea883
 //46.776638,23.595149
-
 
 import React, { useState, useEffect } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
@@ -10,6 +7,7 @@ import { getUserLocation } from "../locationService";
 import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 import { collection, getDocs } from "firebase/firestore";
 import db from "../database/firebase";
+
 
 const MapPage = () => {
   const [mqttClient, setMqttClient] = useState(null);
@@ -31,7 +29,7 @@ const MapPage = () => {
   // Load Google Maps API
   useEffect(() => {
     const loader = new Loader({
-      apiKey: "AIzaSyAOdzL_11lgUUD7CQObIyEoKUUDYRyxZHA",
+      apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
       version: "weekly",
     });
 
@@ -123,8 +121,8 @@ const MapPage = () => {
   return (
     <div>
       <h1>Map Page</h1>
-      <APIProvider apiKey="AIzaSyAOdzL_11lgUUD7CQObIyEoKUUDYRyxZHA">
-        <Map defaultZoom={13} defaultCenter={userPosition} mapId="cae4ae0a5cbea883" style={mapContainerStyle}>
+      <APIProvider apiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
+        <Map defaultZoom={13} defaultCenter={userPosition} mapId={process.env.REACT_APP_MAP_ID_KEY} style={mapContainerStyle}>
           {/* User Marker */}
           <Marker
             position={userPosition}

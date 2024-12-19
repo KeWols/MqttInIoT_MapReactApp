@@ -2,10 +2,10 @@ import mqtt from 'mqtt';
 
 // MQTT Client Initialization
 const connectMqtt = (onMessageCallback) => {
-  const brokerUrl = "wss://violetqueen-d2a2qp.a03.euc1.aws.hivemq.cloud:8884/mqtt";
+  const brokerUrl = process.env.REACT_APP_HIVEMQ_BROKER_URL;
   const options = {
-    username: "KeWols1355", // Cseréld ki a HiveMQ felhasználóneveddel
-    password: "Asdfghjkl456", // Cseréld ki a HiveMQ jelszavaddal
+    username: process.env.REACT_APP_HIVEMQ_USERNAME, // Cseréld ki a HiveMQ felhasználóneveddel
+    password: process.env.REACT_APP_HIVEMQ_PWD, // Cseréld ki a HiveMQ jelszavaddal
   };
 
   // Connect to the broker
