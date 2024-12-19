@@ -1,28 +1,24 @@
-import React, { useState } from 'react';
-import '../App.css';
-import Alert from './Alert';
-import db from '../database/firebase'; 
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import React, { useState } from "react";
+import "../App.css";
+import Alert from "./Alert";
+import db from "../database/firebase";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import bcrypt from "bcryptjs";
 
 const Login = ({ setView }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [alert, setAlert] = useState(null);
 
   const handleLogin = async () => {
     if (!username || !password) {
-      setAlert({ type: 'danger', message: 'Both fields are required.' });
+      setAlert({ type: "danger", message: "Both fields are required." });
       return;
     }
 
     try {
-      const usersCollecion = collection(db, "users");
-      const userQuery = query(
-        usersCollecion,
-        where('username', '==', username)
-      );
-
+      const usersCollection = collection(db, "users");
+      const userQuery = query(usersCollection, where("username", "==", username));
       const querySnapshot = await getDocs(userQuery);
 
       if (!querySnapshot.empty) {
@@ -32,44 +28,37 @@ const Login = ({ setView }) => {
         const passwordMatch = bcrypt.compareSync(password, userData.password);
 
         if (passwordMatch) {
-          setAlert({ type: 'success', message: 'Login successful!' });
+          setAlert({ type: "success", message: "Login successful!" });
+
+          // Save user data to localStorage
+          localStorage.setItem(
+            "currentUser",
+            JSON.stringify({
+              username: userData.username,
+              image: userData.image || "http://maps.google.com/mapfiles/ms/icons/red-dot.png", // Default pin
+            })
+          );
+
           setTimeout(() => {
             setAlert(null);
-            setView('map'); 
+            setView("map"); // Redirect to MapPage
           }, 2000);
         } else {
-          setAlert({ type: 'danger', message: 'Invalid username or password.' });
+          setAlert({ type: "danger", message: "Invalid username or password." });
         }
       } else {
-        setAlert({ type: 'danger', message: 'Invalid username or password.' });
+        setAlert({ type: "danger", message: "Invalid username or password." });
       }
     } catch (error) {
-      console.error('Error logging in:', error);
-      setAlert({ type: 'danger', message: 'Error during login. Try again later.' });
+      console.error("Error logging in:", error);
+      setAlert({ type: "danger", message: "Error during login. Try again later." });
     }
-
-    // Check credentials
-    // const user = userDatas.find(
-    //   (user) => user.username === username && user.password === password
-    // );
-
-    // if (user) {
-    //   setAlert({ type: 'success', message: 'Login successful!' });
-    //   setTimeout(() => {
-    //     setAlert(null);
-    //     setView('map'); // Redirect to MapPage
-    //   }, 2000);
-    // } else {
-    //   setAlert({ type: 'danger', message: 'Invalid username or password.' });
-    // }
   };
-
 
   const handlePwdWarning = () => {
     setAlert({
       type: "warning",
-      message:
-        "This feature is currently unavailable and is not planned for future release.",
+      message: "This feature is currently unavailable and is not planned for future release.",
     });
   };
 
@@ -87,7 +76,7 @@ const Login = ({ setView }) => {
         <button className="login" disabled>
           Login
         </button>
-        <button className="regist" onClick={() => setView('registration')}>
+        <button className="regist" onClick={() => setView("registration")}>
           Registration
         </button>
       </div>

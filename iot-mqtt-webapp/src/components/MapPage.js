@@ -19,6 +19,10 @@ const MapPage = () => {
   const [userPins, setUserPins] = useState({}); // Map of username to pin URL
   const [googleLoaded, setGoogleLoaded] = useState(false);
 
+  // Get current user from localStorage
+  const storedUser = JSON.parse(localStorage.getItem("currentUser")) || { username: "", image: "" };
+  const [currentUser, setCurrentUser] = useState(storedUser);
+
   const topicPub = "friends/location";
   const topicSub = "friends/location";
 
@@ -50,9 +54,9 @@ const MapPage = () => {
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         pins[data.username] = data.image || "http://maps.google.com/mapfiles/ms/icons/red-dot.png"; // Default pin
+        console.log(`Fetched pin for user: ${data.username}, image: ${data.image}`);
       });
       setUserPins(pins);
-      console.log("Fetched user pins:", pins);
     } catch (error) {
       console.error("Error fetching user pins:", error);
     }
@@ -67,7 +71,8 @@ const MapPage = () => {
           const payload = JSON.stringify({
             lat: position.lat,
             lng: position.lng,
-            username: "currentUser", // Replace this with actual logged-in username
+            username: currentUser.username, // Current user's name
+            iconUrl: currentUser.image, // Current user's icon URL
           });
           mqttClient.publishMessage(topicPub, payload);
           console.log("Location published:", payload);
@@ -86,17 +91,10 @@ const MapPage = () => {
         try {
           const receivedData = JSON.parse(message);
 
-          // Update Other Users' Positions and adjust User Position
+          // Update Other Users' Positions
           setOtherPositions((prev) => {
             const filtered = prev.filter((pos) => pos.username !== receivedData.username);
-            const updatedPositions = [...filtered, receivedData];
-
-            // If the Other User's Marker changes, update the User Marker to match
-            if (receivedData.username !== "currentUser") {
-              setUserPosition({ lat: receivedData.lat, lng: receivedData.lng });
-            }
-
-            return updatedPositions;
+            return [...filtered, receivedData];
           });
         } catch (err) {
           console.error("Error parsing MQTT message:", err);
@@ -113,7 +111,7 @@ const MapPage = () => {
   // Periodically publish location
   useEffect(() => {
     if (isSharingEnabled) {
-      const interval = setInterval(fetchAndPublishLocation, 1000);
+      const interval = setInterval(fetchAndPublishLocation, 5000);
       return () => clearInterval(interval);
     }
   }, [isSharingEnabled, mqttClient]);
@@ -131,9 +129,9 @@ const MapPage = () => {
           <Marker
             position={userPosition}
             options={{
-              title: "My Position",
+              title: currentUser.username || "My Position",
               icon: {
-                url: "https://img.icons8.com/?size=48&id=YpfO1uO_dkpP&format=png&color=000000",
+                url: currentUser.image || "http://maps.google.com/mapfiles/ms/icons/red-dot.png", // Default pin
                 scaledSize: new window.google.maps.Size(32, 32),
               },
             }}
@@ -147,7 +145,7 @@ const MapPage = () => {
               options={{
                 title: pos.username,
                 icon: {
-                  url: userPins[pos.username] || "https://img.icons8.com/?size=48&id=gyfjTMlmedO1&format=png&color=000000", // Default
+                  url: pos.iconUrl || "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", // Default pin
                   scaledSize: new window.google.maps.Size(32, 32),
                 },
               }}
@@ -167,8 +165,21 @@ const MapPage = () => {
           Share My Location
         </label>
       </div>
+
+      {/* Active Users List */}
+      <div style={{ marginTop: "20px" }}>
+        <h2>Active Users:</h2>
+        <ul>
+          {otherPositions.map((pos, index) => (
+            <li key={index}>
+              {pos.username} - <img src={pos.iconUrl} alt={pos.username} style={{ width: "20px", height: "20px" }} />
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
 
 export default MapPage;
+
