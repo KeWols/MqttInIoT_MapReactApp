@@ -9,10 +9,10 @@ const PORT = process.env.PORT || 5000;
 const HOST = "0.0.0.0";
 
 // MQTT Broker details
-const brokerUrl = "wss://violetqueen-d2a2qp.a03.euc1.aws.hivemq.cloud:8884/mqtt";
+const brokerUrl = process.env.REACT_APP_HIVEMQ_BROKER_URL;
 const mqttOptions = {
-  username: "KeWols1355", 
-  password: "Asdfghjkl456",
+  username: process.env.REACT_APP_HIVEMQ_USERNAME, 
+  password: process.env.REACT_APP_HIVEMQ_PWD,
 };
 
 // Connect to MQTT Broker
