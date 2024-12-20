@@ -1,7 +1,7 @@
-/* Háttér és alap elrendezés */
+
 .map-page {
-    background-color: #ffffff; /* Lágy rózsaszín háttér */
-    min-height: 100vh; /* Az oldal teljes magasságát lefedi */
+    background-color: #ffffff; 
+    min-height: 100vh; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,7 +10,7 @@
     box-sizing: border-box;
   }
   
-  /* Térkép konténer */
+  
   .map-container {
     width: 100%;
     max-width: 100%;
@@ -21,7 +21,7 @@
     margin-bottom: 20px;
   }
   
-  /* Cím stílusa */
+
   .map-page h1 {
     font-size: 24px;
     color: #333;
@@ -29,7 +29,7 @@
     text-align: center;
   }
   
-  /* Checkbox és megosztás opció */
+
   .checkbox-container {
     display: flex;
     align-items: center;
@@ -52,7 +52,7 @@
     cursor: pointer;
   }
   
-  /* Aktív felhasználók lista konténer */
+
   .active-users-container {
     background-color: white;
     width: 90%;
@@ -68,7 +68,6 @@
     margin-bottom: 15px;
   }
   
-  /* Aktív felhasználók lista */
   .active-users-container ul {
     list-style-type: none;
     padding: 0;
@@ -82,38 +81,38 @@
     gap: 10px;
     padding: 10px;
     border-radius: 8px;
-    background-color: #F9F9F9; /* Világos háttér a listához */
-    margin-bottom: 10px; /* Távolság az elemek között */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Árnyék a listaelemekhez */
+    background-color: #F9F9F9;
+    margin-bottom: 10px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   
   .active-users-container li:hover {
-    transform: scale(1.02); /* Finom nagyítás hover esetén */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Erősebb árnyék hover esetén */
+    transform: scale(1.02); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
   }
   
   .active-users-container img {
-    width: 30px; /* Ikon mérete */
+    width: 30px; 
     height: 30px;
-    border-radius: 50%; /* Kör alakú ikonok */
+    border-radius: 50%;
     object-fit: cover;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Árnyék az ikonokhoz */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
     transition: transform 0.2s ease;
   }
   
   .active-users-container img:hover {
-    transform: scale(1.1); /* Finom nagyítás hover esetén az ikonra */
+    transform: scale(1.1); 
   }
   
-  /* Felhasználónév stílus */
+  
   .active-users-container li span {
     font-size: 16px;
     color: #333;
     font-weight: 500;
   }
   
-  /* Reszponzív design */
+
   @media (max-width: 768px) {
     .map-container {
       height: 540px;
