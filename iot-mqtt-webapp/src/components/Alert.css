@@ -9,7 +9,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 15px;
-  background-color: #2196f3; /* Default: info */
+  background-color: #2196f3;
   color: white;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -52,29 +52,29 @@
   color: #ddd;
 }
 
-/* Reszponzív beállítások kisebb kijelzőkre */
+
 @media (max-width: 768px) {
   .alert {
-    width: 75%; /* A kijelző 95%-a */
-    font-size: 17px; /* Kisebb betűméret */
-    padding: 8px 10px; /* Kisebb belső tér */
-    max-width: none; /* Maximális szélesség eltávolítása */
+    width: 75%; 
+    font-size: 17px; 
+    padding: 8px 10px; 
+    max-width: none; 
     padding: 5px 15px;
     top:25px
   }
 
   .close-btn {
-    font-size: 18px; /* Kisebb méretű bezáró gomb */
+    font-size: 18px;
     margin-left: 8px;
   }
 }
 
 @media (max-width: 480px) {
   .alert {
-    width: 75%; /* Teljes szélesség */
-    font-size: 14px; /* Kisebb betűméret extra kis kijelzőknél */
-    padding: 6px 8px; /* Szűkebb padding */
-    top: 15px; /* Térköz csökkentése a tetején */
+    width: 75%; 
+    font-size: 14px; 
+    padding: 6px 8px; 
+    top: 15px; 
     padding: 12px 15px;
   }
 
